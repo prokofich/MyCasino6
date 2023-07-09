@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_host"
+    app:startDestination="@id/prizesFragment">
+
+    <fragment
+        android:id="@+id/prizesFragment"
+        android:name="com.example.mycasino6.view.fragments.PrizesFragment"
+        android:label="fragment_prizes"
+        tools:layout="@layout/fragment_prizes" >
+        <action
+            android:id="@+id/action_prizesFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.example.mycasino6.view.fragments.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_loadingGameFragment"
+            app:destination="@id/loadingGameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.mycasino6.view.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loadingGameFragment"
+        android:name="com.example.mycasino6.view.fragments.LoadingGameFragment"
+        android:label="fragment_loading_game"
+        tools:layout="@layout/fragment_loading_game" >
+        <action
+            android:id="@+id/action_loadingGameFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_loadingGameFragment_to_gameBakkaraFragment"
+            app:destination="@id/gameBakkaraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameBakkaraFragment"
+        android:name="com.example.mycasino6.view.fragments.GameBakkaraFragment"
+        android:label="fragment_game_bakkara"
+        tools:layout="@layout/fragment_game_bakkara" >
+        <action
+            android:id="@+id/action_gameBakkaraFragment_to_loadingGameFragment"
+            app:destination="@id/loadingGameFragment" />
+        <action
+            android:id="@+id/action_gameBakkaraFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+</navigation>
