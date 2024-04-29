@@ -9,7 +9,13 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import com.example.mycasino6.R
-import com.example.mycasino6.constant.*
+import com.example.mycasino6.model.constant.COEFFICIENT
+import com.example.mycasino6.model.constant.DRAW
+import com.example.mycasino6.model.constant.LOSS
+import com.example.mycasino6.model.constant.MAIN
+import com.example.mycasino6.model.constant.MY_BET
+import com.example.mycasino6.model.constant.MY_OUTCOME_BET
+import com.example.mycasino6.model.constant.WIN
 import com.example.mycasino6.viewmodel.LoadingViewModel
 import kotlinx.android.synthetic.main.fragment_loading_game.*
 
@@ -31,13 +37,13 @@ class LoadingGameFragment : Fragment() {
         //загрузка текста с сервера
         val loadingViewModel = ViewModelProvider(this)[LoadingViewModel::class.java]
         loadingViewModel.getTextLoading()
-        loadingViewModel.Text.observe(viewLifecycleOwner){ TEXT ->
-            id_loading_tv1.text = TEXT.body()!!.text
+        loadingViewModel.text.observe(viewLifecycleOwner){
+            id_loading_tv1.text = it.body()!!.text
         }
 
         //выход в меню
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
-            MAIN.navController.navigate(R.id.action_loadingGameFragment_to_menuFragment)
+            MAIN.navController?.navigate(R.id.action_loadingGameFragment_to_menuFragment)
         }
 
         //ставка на победу
@@ -70,7 +76,7 @@ class LoadingGameFragment : Fragment() {
         //перейти к игру
         id_loading_button_next.setOnClickListener {
             if(id_loading_et1.text.toString().isNotEmpty()){
-                if(myOutcomeBet!=""){
+                if(myOutcomeBet.isNotEmpty()){
                     if(id_loading_et1.text.toString().toInt()>10){
                         if(id_loading_et1.text.toString().toInt()< MAIN.getMyCash()){
                             val bundle = Bundle()
@@ -78,7 +84,7 @@ class LoadingGameFragment : Fragment() {
                             bundle.putInt(COEFFICIENT,coefficient)
                             bundle.putInt(MY_BET,id_loading_et1.text.toString().toInt())
                             MAIN.minusCash(id_loading_et1.text.toString().toInt())
-                            MAIN.navController.navigate(R.id.action_loadingGameFragment_to_gameBakkaraFragment,bundle)
+                            MAIN.navController?.navigate(R.id.action_loadingGameFragment_to_gameBakkaraFragment,bundle)
                         }else{
                             Toast.makeText(requireContext(),"you don't have enough money",Toast.LENGTH_SHORT).show()
                         }
@@ -92,8 +98,6 @@ class LoadingGameFragment : Fragment() {
                 Toast.makeText(requireContext(),"enter your bid amount",Toast.LENGTH_SHORT).show()
             }
         }
-
-
 
     }
 

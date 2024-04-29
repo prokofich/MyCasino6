@@ -1,5 +1,6 @@
 package com.example.mycasino6.view.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import com.example.mycasino6.R
-import com.example.mycasino6.constant.MAIN
+import com.example.mycasino6.model.constant.MAIN
 import com.example.mycasino6.viewmodel.MenuViewModel
 import kotlinx.android.synthetic.main.fragment_menu.*
 
@@ -21,6 +22,8 @@ class MenuFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_menu, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         id_menu_tv_my_cash.text = MAIN.getMyCash().toString()+"$"
@@ -31,9 +34,11 @@ class MenuFragment : Fragment() {
 
         //загрузка текста с сервера
         val menuViewModel = ViewModelProvider(this)[MenuViewModel::class.java]
+
         menuViewModel.getTextMenu()
-        menuViewModel.Text.observe(viewLifecycleOwner){ TEXT ->
-            id_menu_tv_description_game.text = TEXT.body()!!.text
+
+        menuViewModel.text.observe(viewLifecycleOwner){
+            id_menu_tv_description_game.text = it.body()!!.text
         }
 
         //закрытие приложение по нажатии на кнопку НАЗАД
@@ -41,15 +46,14 @@ class MenuFragment : Fragment() {
             MAIN.finishAffinity()
         }
 
-
         //кнопка начать игру
         id_menu_button_start.setOnClickListener {
-            MAIN.navController.navigate(R.id.action_menuFragment_to_loadingGameFragment)
+            MAIN.navController?.navigate(R.id.action_menuFragment_to_loadingGameFragment)
         }
 
         //кнопка настройки
         id_menu_button_settings.setOnClickListener {
-            MAIN.navController.navigate(R.id.action_menuFragment_to_settingsFragment)
+            MAIN.navController?.navigate(R.id.action_menuFragment_to_settingsFragment)
         }
 
         //кнопка выхода

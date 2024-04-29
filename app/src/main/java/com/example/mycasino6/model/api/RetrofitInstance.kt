@@ -1,4 +1,4 @@
-package com.example.mycasino6.api
+package com.example.mycasino6.model.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

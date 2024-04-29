@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
 import com.example.mycasino6.R
-import com.example.mycasino6.constant.MAIN
+import com.example.mycasino6.model.constant.MAIN
 import kotlinx.android.synthetic.main.fragment_prizes.*
 import kotlinx.coroutines.*
 import org.threeten.bp.LocalDate
-
 
 class PrizesFragment : Fragment() {
 
@@ -27,20 +26,19 @@ class PrizesFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_prizes, container, false)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         //проверка "прошли ли сутки после последнего приза"
         if(LocalDate.now().toString() == MAIN.getLastDay()){
-            MAIN.navController.navigate(R.id.action_prizesFragment_to_menuFragment)
+            MAIN.navController?.navigate(R.id.action_prizesFragment_to_menuFragment)
         }
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         //закрытие приложение по нажатии на кнопку НАЗАД
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
@@ -53,7 +51,7 @@ class PrizesFragment : Fragment() {
         //нажатие на кнопку В МЕНЮ
         id_prizes_button_into_menu.setOnClickListener {
             if(winCash.isNotEmpty()){
-                MAIN.navController.navigate(R.id.action_prizesFragment_to_menuFragment)
+                MAIN.navController?.navigate(R.id.action_prizesFragment_to_menuFragment)
             }else{
                 Toast.makeText(requireContext(),"win a cash prize first",Toast.LENGTH_SHORT).show()
             }
@@ -79,9 +77,5 @@ class PrizesFragment : Fragment() {
         }
 
     }
-
-
-
-
 
 }

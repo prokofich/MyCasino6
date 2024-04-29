@@ -1,4 +1,4 @@
-package com.example.mycasino6.constant
+package com.example.mycasino6.model.constant
 
 //splash
 const val urlImageSplash = "http://37.27.9.28/13/plash_casin06.jpg"

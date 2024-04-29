@@ -9,7 +9,7 @@
 
 
     <application
-        android:name=".OneSignalApplication"
+        android:name=".model.application.OneSignalApplication"
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"

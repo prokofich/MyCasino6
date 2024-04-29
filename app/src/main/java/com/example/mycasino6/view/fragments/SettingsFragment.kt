@@ -1,5 +1,6 @@
 package com.example.mycasino6.view.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,10 +9,8 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.lifecycle.ViewModelProvider
 import com.example.mycasino6.R
-import com.example.mycasino6.constant.MAIN
-import com.example.mycasino6.viewmodel.MenuViewModel
+import com.example.mycasino6.model.constant.MAIN
 import com.example.mycasino6.viewmodel.SettingsViewModel
-import kotlinx.android.synthetic.main.fragment_menu.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : Fragment() {
@@ -23,6 +22,7 @@ class SettingsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -32,19 +32,18 @@ class SettingsFragment : Fragment() {
         //загрузка текста с сервера
         val settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
         settingsViewModel.getTextSettings()
-        settingsViewModel.Text.observe(viewLifecycleOwner){ TEXT ->
-            id_set_tv_description.text = TEXT.body()!!.text
+        settingsViewModel.text.observe(viewLifecycleOwner){
+            id_set_tv_description.text =it.body()!!.text
         }
 
         //возвращение в меню по нажатии на кнопку НАЗАД
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
-            MAIN.navController.navigate(R.id.action_settingsFragment_to_menuFragment)
+            MAIN.navController?.navigate(R.id.action_settingsFragment_to_menuFragment)
         }
-
 
         //кнопка возврата в меню
         id_set_into_menu.setOnClickListener {
-            MAIN.navController.navigate(R.id.action_settingsFragment_to_menuFragment)
+            MAIN.navController?.navigate(R.id.action_settingsFragment_to_menuFragment)
         }
 
         //пересохранение имени
@@ -61,9 +60,6 @@ class SettingsFragment : Fragment() {
             }
         }
 
-
     }
-
-
 
 }

@@ -12,7 +12,16 @@ import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.mycasino6.R
-import com.example.mycasino6.constant.*
+import com.example.mycasino6.model.constant.COEFFICIENT
+import com.example.mycasino6.model.constant.MAIN
+import com.example.mycasino6.model.constant.MY_BET
+import com.example.mycasino6.model.constant.MY_OUTCOME_BET
+import com.example.mycasino6.model.constant.listAllCard
+import com.example.mycasino6.model.constant.mapAllCard
+import com.example.mycasino6.model.constant.nameServer
+import com.example.mycasino6.model.constant.urlImageGameDiller
+import com.example.mycasino6.model.constant.urlImageGameGirl
+import com.example.mycasino6.model.constant.urlImageGameMan
 import kotlinx.android.synthetic.main.fragment_game_bakkara.*
 import kotlinx.coroutines.*
 
@@ -54,12 +63,12 @@ class GameBakkaraFragment : Fragment() {
 
         //выход в меню
         id_game_button_finish.setOnClickListener {
-            MAIN.navController.navigate(R.id.action_gameBakkaraFragment_to_menuFragment)
+            MAIN.navController?.navigate(R.id.action_gameBakkaraFragment_to_menuFragment)
         }
 
         //переход в загрузку игры
         id_game_button_restart.setOnClickListener {
-            MAIN.navController.navigate(R.id.action_gameBakkaraFragment_to_loadingGameFragment)
+            MAIN.navController?.navigate(R.id.action_gameBakkaraFragment_to_loadingGameFragment)
         }
 
 
@@ -67,12 +76,8 @@ class GameBakkaraFragment : Fragment() {
             if(job1.isActive){
                 job1.cancel()
             }
-            MAIN.navController.navigate(R.id.action_gameBakkaraFragment_to_loadingGameFragment)
+            MAIN.navController?.navigate(R.id.action_gameBakkaraFragment_to_loadingGameFragment)
         }
-
-
-
-
 
         id_game_button_go.setOnClickListener {
             job1 = CoroutineScope(Dispatchers.Main).launch {
@@ -106,18 +111,16 @@ class GameBakkaraFragment : Fragment() {
 
         }
 
-
-
     }
 
-    private fun loadImage(url:String,id:ImageView){
+    private fun loadImage(url : String , id : ImageView){
         Glide.with(requireContext())
             .load(url)
             .into(id)
     }
 
     private fun loadMyImage(){
-        if(MAIN.getMySex()=="male"){
+        if(MAIN.getMySex() == "male"){
             loadImage(urlImageGameMan,id_game_img1_me)
         }else{
             loadImage(urlImageGameGirl,id_game_img1_me)
@@ -125,22 +128,14 @@ class GameBakkaraFragment : Fragment() {
     }
 
     private fun loadCard(){
-        Glide.with(requireContext())
-            .load(nameServer+myListCard[0])
-            .into(id_game_img2_me)
-        Glide.with(requireContext())
-            .load(nameServer+myListCard[1])
-            .into(id_game_img3_me)
-        Glide.with(requireContext())
-            .load(nameServer+opponentListCard[0])
-            .into(id_game_img2_banker)
-        Glide.with(requireContext())
-            .load(nameServer+opponentListCard[1])
-            .into(id_game_img3_banker)
+        Glide.with(requireContext()).load(nameServer + myListCard[0]).into(id_game_img2_me)
+        Glide.with(requireContext()).load(nameServer + myListCard[1]).into(id_game_img3_me)
+        Glide.with(requireContext()).load(nameServer + opponentListCard[0]).into(id_game_img2_banker)
+        Glide.with(requireContext()).load(nameServer + opponentListCard[1]).into(id_game_img3_banker)
     }
 
     //проверка чистой победы у кого либо
-    private fun checkCleanVictory(): Boolean {
+    private fun checkCleanVictory() : Boolean {
         return ((myListPoints.sum())%10 > 7 && (opListPoints.sum())%10 < 8) ||
                 ((opListPoints.sum())%10 > 7 && (myListPoints.sum())%10 < 8)
     }
@@ -151,7 +146,7 @@ class GameBakkaraFragment : Fragment() {
             //моя чистая победа
             paintMe()
             showToast("your clean victory!")
-            if(myOutcomeBet=="win"){
+            if(myOutcomeBet == "win"){
                 showToast("you guessed right with the outcome of the game and get ${myBet*coefficient}")
                 MAIN.addCash(myBet*coefficient)
                 visibleButtonRestartAndFinish()
@@ -164,7 +159,7 @@ class GameBakkaraFragment : Fragment() {
             //мой чистый проигрыш
             paintBanker()
             showToast("your net loss")
-            if(myOutcomeBet=="loss"){
+            if(myOutcomeBet == "loss"){
                 showToast("you guessed right with the outcome of the game and get ${myBet*coefficient}")
                 MAIN.addCash(myBet*coefficient)
                 visibleButtonRestartAndFinish()
@@ -208,58 +203,58 @@ class GameBakkaraFragment : Fragment() {
             //мне полагается 3 карта
             myListCard.add(listRandom6Card[4])
             myListPoints.add(mapAllCard[myListCard[2]]!!)
-            loadImage(nameServer+myListCard[2],id_game_img4_me)
+            loadImage(nameServer +myListCard[2],id_game_img4_me)
         }
 
         if((opListPoints.sum())%10<6 && (myListPoints.sum())%10<8){
             //диллеру полагается 3 карта
             opponentListCard.add(listRandom6Card[5])
             opListPoints.add(mapAllCard[opponentListCard[2]]!!)
-            loadImage(nameServer+opponentListCard[2],id_game_img4_banker)
+            loadImage(nameServer +opponentListCard[2],id_game_img4_banker)
         }
 
-        if(myListCard.size==3){
-            if((mapAllCard[myListCard[2]]==9 || mapAllCard[myListCard[2]]==1) && (opListPoints.sum())%10<4 && opponentListCard.size==2){
+        if(myListCard.size == 3){
+            if((mapAllCard[myListCard[2]] == 9 || mapAllCard[myListCard[2]] == 1) && (opListPoints.sum())%10<4 && opponentListCard.size == 2){
                 //диллеру полагается 3 карта
                 opponentListCard.add(listRandom6Card[5])
                 opListPoints.add(mapAllCard[opponentListCard[2]]!!)
-                loadImage(nameServer+opponentListCard[2],id_game_img4_banker)
+                loadImage(nameServer +opponentListCard[2],id_game_img4_banker)
             }
         }
 
-        if(myListCard.size==3){
-            if((mapAllCard[myListCard[2]]==8) && (opListPoints.sum())%10<3 && opponentListCard.size==2){
+        if(myListCard.size == 3){
+            if((mapAllCard[myListCard[2]] == 8) && (opListPoints.sum())%10<3 && opponentListCard.size == 2){
                 //диллеру полагается 3 карта
                 opponentListCard.add(listRandom6Card[5])
                 opListPoints.add(mapAllCard[opponentListCard[2]]!!)
-                loadImage(nameServer+opponentListCard[2],id_game_img4_banker)
+                loadImage(nameServer +opponentListCard[2],id_game_img4_banker)
             }
         }
 
-        if(myListCard.size==3){
-            if((mapAllCard[myListCard[2]]==6 || mapAllCard[myListCard[2]]==7) && (opListPoints.sum())%10<7 && opponentListCard.size==2){
+        if(myListCard.size == 3){
+            if((mapAllCard[myListCard[2]] == 6 || mapAllCard[myListCard[2]] == 7) && (opListPoints.sum())%10<7 && opponentListCard.size == 2){
                 //диллеру полагается 3 карта
                 opponentListCard.add(listRandom6Card[5])
                 opListPoints.add(mapAllCard[opponentListCard[2]]!!)
-                loadImage(nameServer+opponentListCard[2],id_game_img4_banker)
+                loadImage(nameServer +opponentListCard[2],id_game_img4_banker)
             }
         }
 
-        if(myListCard.size==3){
-            if((mapAllCard[myListCard[2]]==4 || mapAllCard[myListCard[2]]==5) && (opListPoints.sum())%10<6 && opponentListCard.size==2){
+        if(myListCard.size == 3){
+            if((mapAllCard[myListCard[2]] == 4 || mapAllCard[myListCard[2]] == 5) && (opListPoints.sum())%10<6 && opponentListCard.size == 2){
                 //диллеру полагается 3 карта
                 opponentListCard.add(listRandom6Card[5])
                 opListPoints.add(mapAllCard[opponentListCard[2]]!!)
-                loadImage(nameServer+opponentListCard[2],id_game_img4_banker)
+                loadImage(nameServer +opponentListCard[2],id_game_img4_banker)
             }
         }
 
-        if(myListCard.size==3){
-            if((mapAllCard[myListCard[2]]==2 || mapAllCard[myListCard[2]]==3) && (opListPoints.sum())%10<5 && opponentListCard.size==2){
+        if(myListCard.size == 3){
+            if((mapAllCard[myListCard[2]] == 2 || mapAllCard[myListCard[2]] == 3) && (opListPoints.sum())%10<5 && opponentListCard.size == 2){
                 //диллеру полагается 3 карта
                 opponentListCard.add(listRandom6Card[5])
                 opListPoints.add(mapAllCard[opponentListCard[2]]!!)
-                loadImage(nameServer+opponentListCard[2],id_game_img4_banker)
+                loadImage(nameServer +opponentListCard[2],id_game_img4_banker)
             }
         }
 
@@ -311,9 +306,7 @@ class GameBakkaraFragment : Fragment() {
         }
     }
 
-    private fun showToast(message:String){
-        Toast.makeText(requireContext(),message,Toast.LENGTH_LONG).show()
-    }
+    private fun showToast(message : String) = Toast.makeText(requireContext(),message,Toast.LENGTH_LONG).show()
 
     private fun visibleButtonRestartAndFinish(){
         id_game_cs_button_finish_and_restart.isVisible = true
@@ -326,6 +319,5 @@ class GameBakkaraFragment : Fragment() {
     private fun paintMe(){
         id_game_cs_me.setBackgroundResource(R.color.black_green)
     }
-
 
 }

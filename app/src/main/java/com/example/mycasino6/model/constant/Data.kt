@@ -1,4 +1,4 @@
-package com.example.mycasino6.constant
+package com.example.mycasino6.model.constant
 
 var listAllCard = listOf("6chervi.png","7chervi.png","8chervi.png",
     "9chervi.jpg" ,"10chervi.png","waletchervi.png",

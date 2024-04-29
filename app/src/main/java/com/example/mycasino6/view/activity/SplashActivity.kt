@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.mycasino6.R
-import com.example.mycasino6.constant.APP_PREFERENCES
-import com.example.mycasino6.constant.ID
-import com.example.mycasino6.constant.MY_NAME
-import com.example.mycasino6.constant.urlImageSplash
+import com.example.mycasino6.model.constant.APP_PREFERENCES
+import com.example.mycasino6.model.constant.ID
+import com.example.mycasino6.model.constant.MY_NAME
+import com.example.mycasino6.model.constant.urlImageSplash
 import com.example.mycasino6.viewmodel.SplashViewModel
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.CoroutineScope
@@ -32,16 +31,10 @@ class SplashActivity : AppCompatActivity() {
             .load(urlImageSplash)
             .into(id_splash_img)
 
-        //установка полноэкранного режима
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
-
         val splashViewModel = ViewModelProvider(this)[SplashViewModel::class.java]
 
-        var namePhone = Build.MODEL.toString()
-        var locale = Locale.getDefault().getDisplayLanguage().toString()
+        val namePhone = Build.MODEL.toString()
+        val locale = Locale.getDefault().displayLanguage.toString()
         var id = ""
 
         if (getMyId()!=""){
@@ -61,50 +54,44 @@ class SplashActivity : AppCompatActivity() {
             }
         }
 
-
     }
 
     //функция получения имени
-    fun getMyName(): String {
-        val preferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE).getString(MY_NAME,"")
-        return preferences ?: ""
+    private fun getMyName() : String {
+        return getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE).getString(MY_NAME,"").toString()
     }
 
-    fun getMyId():String{
-        var preferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getString(ID,"")
-        return preferences ?: ""
+    private fun getMyId():String{
+        return getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).getString(ID,"").toString()
     }
 
-    fun setMyId(id:String){
-        var preferences = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        preferences.edit()
-            .putString(ID,id)
-            .apply()
+    private fun setMyId(id:String){
+        getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).edit().putString(ID,id).apply()
     }
 
-    fun goToMainPush() {
+    private fun goToMainPush() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(4000)
-            if(getMyName()!=""){
-                var intent = Intent(this@SplashActivity,MainActivity::class.java)
+            if(getMyName() != ""){
+                val intent = Intent(this@SplashActivity,MainActivity::class.java)
                 startActivity(intent)
             }else{
-                var intent = Intent(this@SplashActivity,RegistrationActivity::class.java)
+                val intent = Intent(this@SplashActivity,RegistrationActivity::class.java)
                 startActivity(intent)
             }
 
         }
     }
 
-    fun goToMainNoPush() {
+    private fun goToMainNoPush() {
         CoroutineScope(Dispatchers.Main).launch {
             delay(4000)
             if(getMyName()!=""){
-                var intent = Intent(this@SplashActivity,MainActivity::class.java)
+                val intent = Intent(this@SplashActivity,MainActivity::class.java)
                 intent.putExtra("url","nopush")
                 startActivity(intent)
             }else{
-                var intent = Intent(this@SplashActivity,RegistrationActivity::class.java)
+                val intent = Intent(this@SplashActivity,RegistrationActivity::class.java)
                 intent.putExtra("url","nopush")
                 startActivity(intent)
             }
@@ -112,10 +99,10 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    fun goToWeb(url:String) {
+    private fun goToWeb(url:String) {
         CoroutineScope(Dispatchers.Main).launch {
             delay(4000)
-            var intent = Intent(this@SplashActivity,WebViewActivity::class.java)
+            val intent = Intent(this@SplashActivity,WebViewActivity::class.java)
             intent.putExtra("url",url)
             startActivity(intent)
         }

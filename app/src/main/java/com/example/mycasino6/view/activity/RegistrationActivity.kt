@@ -4,15 +4,14 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
 import android.widget.RadioButton
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.mycasino6.R
-import com.example.mycasino6.constant.APP_PREFERENCES
-import com.example.mycasino6.constant.MY_NAME
-import com.example.mycasino6.constant.MY_SEX
-import com.example.mycasino6.constant.urlImageRegistration
+import com.example.mycasino6.model.constant.APP_PREFERENCES
+import com.example.mycasino6.model.constant.MY_NAME
+import com.example.mycasino6.model.constant.MY_SEX
+import com.example.mycasino6.model.constant.urlImageRegistration
 import kotlinx.android.synthetic.main.activity_registration.*
 
 class RegistrationActivity : AppCompatActivity() {
@@ -28,14 +27,8 @@ class RegistrationActivity : AppCompatActivity() {
             .load(urlImageRegistration)
             .into(id_reg_img)
 
-        //установка полноэкранного режима
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
-
         //нажатие на определенный пол(мужской,женский)
-        id_reg_dadiogroup.setOnCheckedChangeListener { group, checkedId ->
+        id_reg_dadiogroup.setOnCheckedChangeListener { _, checkedId ->
             if (checkedId != -1) {
                 val radioButton: RadioButton = findViewById(checkedId)
                 mySex = radioButton.text.toString()
@@ -58,8 +51,6 @@ class RegistrationActivity : AppCompatActivity() {
             }
         }
 
-
-
     }
 
     //выход по нажатии на кнопку НАЗАД
@@ -70,20 +61,13 @@ class RegistrationActivity : AppCompatActivity() {
     }
 
     //функция установки пола
-    private fun setMySex(sex:String){
-        val pref = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        pref.edit()
-            .putString(MY_SEX,sex)
-            .apply()
+    private fun setMySex(sex : String) {
+        getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).edit().putString(MY_SEX,sex).apply()
     }
 
     //функция установки имени
-    private fun setMyName(name:String){
-        val pref = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
-        pref.edit()
-            .putString(MY_NAME,name)
-            .apply()
+    private fun setMyName(name : String) {
+        getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE).edit().putString(MY_NAME,name).apply()
     }
-
 
 }
